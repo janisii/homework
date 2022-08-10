@@ -2,26 +2,38 @@
 
 class Logger
 {
+    /* Logger message types */
     const MESSAGE_ERROR = 'ERROR';
     const MESSAGE_SUCCESS = 'SUCCESS';
+    const LOG_FILE = 'application.log';
 
-    private $logFileName = 'application.log';
-
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->createLogFile();
     }
 
+    /**
+     * Return self instance
+     */
     public static function get()
     {
         return new self();
     }
 
+    /**
+     * Log error message
+     */
     public function logError($message)
     {
         return $this->writeMessageToFile(self::MESSAGE_ERROR, $message);
     }
 
+    /**
+     * Log success message
+     */
     public function logSuccess($message)
     {
         return $this->writeMessageToFile(self::MESSAGE_SUCCESS, $message);
@@ -33,11 +45,11 @@ class Logger
     public function createLogFile()
     {
         // check if file exists, return if file found
-        if (file_exists($this->logFileName)) {
+        if (file_exists(self::LOG_FILE)) {
             return false;
         }
         // create empty file
-        if (file_put_contents($this->logFileName, '') === false) {
+        if (file_put_contents(self::LOG_FILE, '') === false) {
             return false;
         }
 
@@ -51,7 +63,7 @@ class Logger
     private function writeMessageToFile(string $type, string $message)
     {
         // check if file is writebale
-        if (!is_writable($this->logFileName)) {
+        if (!is_writable(self::LOG_FILE)) {
             return false;
         }
 
@@ -64,7 +76,7 @@ class Logger
         $logMessage = $type . ': ' . $message . "\n";
 
         // open log file
-        $logFile = fopen($this->logFileName, 'a');
+        $logFile = fopen(self::LOG_FILE, 'a');
 
         // could not open the file
         if ($logFile === false) {
