@@ -2,11 +2,14 @@
 
 class Logger
 {
-    /* Logger message types */
+    // logger message types
     const MESSAGE_ERROR = 'ERROR';
     const MESSAGE_SUCCESS = 'SUCCESS';
+
+    // logger data file
     const LOG_FILE = 'application.log';
 
+    // log to console
     private $console = false;
 
     /**
@@ -98,7 +101,7 @@ class Logger
         fclose($logFile);
 
         // log message to console
-        if ($this->logConsole) {
+        if ($this->console) {
             echo $logMessage;
         }
 
@@ -122,6 +125,6 @@ class Logger
         }
 
         // enable console
-        $this->logConsole = true;
+        $this->console = true;
     }
 }
