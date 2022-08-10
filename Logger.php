@@ -2,6 +2,9 @@
 
 class Logger
 {
+    const MESSAGE_ERROR = 'ERROR';
+    const MESSAGE_SUCCESS = 'SUCCESS';
+
     private $logFileName = 'application.log';
 
     public function __construct()
@@ -16,15 +19,12 @@ class Logger
 
     public function logError($message)
     {
-        $logFile = fopen('application.log', 'w');
-        fwrite($logFile, 'ERROR: ' . $message);
-        fclose($logFile);
+        return $this->writeMessageToFile(self::MESSAGE_ERROR, $message);
     }
 
-    public function logSuccess($msg)
+    public function logSuccess($message)
     {
-        $logFile = fopen('application.log', 'a');
-        fwrite($logFile, 'SUCCESS: ' . $msg);
+        return $this->writeMessageToFile(self::MESSAGE_SUCCESS, $message);
     }
 
     /**
@@ -41,7 +41,48 @@ class Logger
             return false;
         }
 
-        // Completed
+        // file is created
         return true;
+    }
+
+    /**
+     * Write log message to file
+     */
+    private function writeMessageToFile(string $type, string $message)
+    {
+        // check if file is writebale
+        if (!is_writable($this->logFileName)) {
+            return false;
+        }
+
+        // avoid to log empty messages
+        if (empty(trim($message))) {
+            return false;
+        }
+
+        // prepare log message
+        $logMessage = $type . ': ' . $message . "\n";
+
+        // open log file
+        $logFile = fopen($this->logFileName, 'a');
+
+        // could not open the file
+        if ($logFile === false) {
+            return false;
+        }
+
+        // write to file
+        $fWriteResult = fwrite($logFile, $logMessage);
+
+        // could not write to file
+        if ($fWriteResult === false) {
+            return false;
+        }
+
+        // close file
+        fclose($logFile);
+
+        // return logged message
+        return trim($logMessage);
     }
 }
