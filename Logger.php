@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Logger
+ */
 class Logger
 {
     // logger message types
@@ -24,31 +27,39 @@ class Logger
     /**
      * Return self instance
      */
-    public static function get()
+    public static function get(): Logger
     {
         return new self();
     }
 
     /**
-     * Log error message
+     * Log success message
+     *
+     * @param  mixed $message
+     * @return string|boolean
      */
-    public function logError($message)
+    public function logError($message): string|bool
     {
         return $this->writeMessageToFile(self::MESSAGE_ERROR, $message);
     }
 
     /**
      * Log success message
+     *
+     * @param  mixed $message
+     * @return string|boolean
      */
-    public function logSuccess($message)
+    public function logSuccess($message): string|bool
     {
         return $this->writeMessageToFile(self::MESSAGE_SUCCESS, $message);
     }
 
     /**
      * Create log file
+     *
+     * @return boolean
      */
-    public function createLogFile()
+    public function createLogFile(): bool
     {
         // check if file exists, return if file found
         if (file_exists(self::LOG_FILE)) {
@@ -66,8 +77,12 @@ class Logger
 
     /**
      * Write log message to file
+     *
+     * @param  mixed $type
+     * @param  mixed $message
+     * @return string|boolean
      */
-    private function writeMessageToFile(string $type, string $message)
+    private function writeMessageToFile(string $type, string $message): string|bool
     {
         // check if file is writebale
         if (!is_writable(self::LOG_FILE)) {
@@ -112,20 +127,22 @@ class Logger
 
     /**
      * Enable console if first argv param is --console
+     *
+     * @return boolean
      */
-    private function enableConsole()
+    private function enableConsole(): bool
     {
         // no params
         if (!isset($_SERVER["argv"][1])) {
-            return;
+            return false;
         }
 
         // check if first param is --console
         if (trim($_SERVER["argv"][1]) !== '--console') {
-            return;
+            return false;
         }
 
         // enable console
-        $this->console = true;
+        return $this->console = true;
     }
 }
