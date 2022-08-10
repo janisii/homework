@@ -7,12 +7,15 @@ class Logger
     const MESSAGE_SUCCESS = 'SUCCESS';
     const LOG_FILE = 'application.log';
 
+    private $console = false;
+
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->createLogFile();
+        $this->enableConsole();
     }
 
     /**
@@ -94,7 +97,31 @@ class Logger
         // close file
         fclose($logFile);
 
+        // log message to console
+        if ($this->logConsole) {
+            echo $logMessage;
+        }
+
         // return logged message
         return trim($logMessage);
+    }
+
+    /**
+     * Enable console if first argv param is --console
+     */
+    private function enableConsole()
+    {
+        // no params
+        if (!isset($_SERVER["argv"][1])) {
+            return;
+        }
+
+        // check if first param is --console
+        if (trim($_SERVER["argv"][1]) !== '--console') {
+            return;
+        }
+
+        // enable console
+        $this->logConsole = true;
     }
 }
