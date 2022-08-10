@@ -52,8 +52,9 @@ class Logger
     {
         // check if file exists, return if file found
         if (file_exists(self::LOG_FILE)) {
-            return false;
+            return true;
         }
+
         // create empty file
         if (file_put_contents(self::LOG_FILE, '') === false) {
             return false;

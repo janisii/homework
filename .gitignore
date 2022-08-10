@@ -1,2 +1,4 @@
 .idea
 application.log
+/vendor/
+composer.lock

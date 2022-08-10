@@ -1,0 +1,18 @@
+{
+  "name": "janis/homework",
+  "require-dev": {
+    "phpunit/phpunit": "^9.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Janis\\Homework\\": "./"
+    }
+  },
+  "authors": [
+    {
+      "name": "Janis Itkacs",
+      "email": "janis.itkacs@gmail.com"
+    }
+  ],
+  "require": {}
+}
